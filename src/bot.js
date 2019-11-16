@@ -14,7 +14,7 @@ const client = new tmi.Client({
           username: 'bot_titus',
           password: process.env.TOKEN
      },
-     channels: ['titus_clan','kaquka']
+     channels: ['titus_clan']
 });
 
 client.connect();
