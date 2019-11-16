@@ -14,7 +14,7 @@ const client = new tmi.Client({
           username: 'bot_titus',
           password: process.env.TOKEN
      },
-     channels: ['titus_clan']
+     channels: ['titus_clan','kaquka']
 });
 
 client.connect();
@@ -23,14 +23,9 @@ client.on("chat", (channel, user, message, self) => {
      if (self) {
           return;
      }
-     if (user.mod) {
-          console.log('es mod')
-     }
-     
-     socket.emit('voiceChat', { message: message });
+     socket.emit('voiceChat', { message: message, isMod: user.mod || false, isSuscriber: user.subscriber || false, author: user.username  });
 
      if (message.startsWith("! ")) {
-          socket.emit('voiceChat', { message: message });
-          console.log('mensaje de chat---------------------------------')
+          //socket.emit('voiceChat', { message: message, ismod: user.mod || false, issuscribes: user.subscriber || false, autho: user.username  });
      }
 });

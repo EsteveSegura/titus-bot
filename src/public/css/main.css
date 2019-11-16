@@ -1,0 +1,44 @@
+html,body{
+     background-color: #121212 !important;
+     margin: 0 ! important;
+     padding: 0 ! important;
+     
+}
+
+.chat{
+     margin: 6.3em 1.7em 1em 0em;
+     width: 100%;
+}
+
+.badge-chat{
+     background-color: #383838;
+}
+
+.user-chat{
+     margin: 0.2em 0.7em 0.5em 0.7em;
+     font-size: 21px;
+     font-weight: bolder;
+     color:#bb86fc;
+}
+
+.message-chat{
+     margin: 0.2em 0.7em 0.5em 0.2em;
+     font-size: 21px;
+     color:#e2e2e2;
+}
+
+.text-subMode{
+     font-size: 23px;
+     color: #e2e2e2;
+}
+
+.admin{
+     margin-top: 1em;
+     background-color: #121212;
+}
+
+input.subMode { 
+     margin-top: 1em;
+     width: 23px; 
+     height: 23px; 
+} 

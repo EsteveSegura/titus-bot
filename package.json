@@ -1,0 +1,33 @@
+{
+  "name": "titus-bot",
+  "version": "0.0.1",
+  "description": "bot twitch",
+  "main": "bot.js",
+  "scripts": {
+    "test": "nodemon bot.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EsteveSegura/titus-bot.git"
+  },
+  "keywords": [
+    "twitch",
+    "bot"
+  ],
+  "author": "GiR",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/EsteveSegura/titus-bot/issues"
+  },
+  "homepage": "https://github.com/EsteveSegura/titus-bot#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "ejs": "^2.7.2",
+    "express": "^4.17.1",
+    "morgan": "^1.9.1",
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0",
+    "tmi.js": "^1.5.0"
+  }
+}

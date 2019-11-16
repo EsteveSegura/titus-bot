@@ -5,26 +5,99 @@
      <meta charset="UTF-8">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+     <link href="./css/main.css" rel="stylesheet">
+     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
      <title>Chat</title>
 </head>
 
 <body>
-
-     <button onclick="initChat()">INIT CHAT</button>
-     
+     <div class="text-center">
+          <div class="fixed-top admin">
+               <button id="initchat" onclick="initChat()">Iniciar chat de voz</button><br>
+               <input id="check-subMode" type="checkbox" class="subMode" name="field" value="option">
+               <label for="check-subMode" class="text-subMode"><span><span></span></span>Modo sub!</label>
+          </div>
+     </div>
+     <div id="chat" class="chat">
+          <div class="badge-chat d-flex flex-row">
+               <div class="user-chat">¡Chat iniciado!</div>
+               <div class="message-chat"></div>
+          </div>
+     </div>
+     <script src="https://code.jquery.com/jquery-3.4.1.min.js">
+     </script>
+     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
      <script src="http://code.responsivevoice.org/responsivevoice.js"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+
      <script>
           let socket = io.connect();
-          socket.on('voiceChat', function (data) {
-               console.log(data);
-               responsiveVoice.speak(data.body.message, "Spanish Female"); //UK English Male
-               //socket.emit('my other event', { my: 'data' });
+          let messagesQueue = []
+          let subMode = false;
+
+          $("#check-subMode").change(function () {
+               if (this.checked) {
+                    subMode = true;
+               }else{
+                    subMode = false;
+               }
           });
 
-          function initChat(){
-               responsiveVoice.speak("Voice chat on", "Spanish Female");
+          socket.on('voiceChat', async (data) => {
+               console.log(data);
+               addNewMessageInChat(data.body.author, data.body.message)
+               $(document).scrollTop($(document).height());//Scroll bottom
+
+               if (data.body.message.startsWith("! ")) {
+                    if (subMode) {
+                         if(data.body.isSuscriber){
+                              messagesQueue.push(data.body.message.substr(1))
+                         }
+                    }else{
+                         messagesQueue.push(data.body.message.substr(1))
+                    }
+               }
+          });
+
+
+          function addNewMessageInChat(user, message) {
+               let template = `<div class="badge-chat d-flex flex-row">
+               <div class="user-chat">${user}:</div>
+               <div class="message-chat">${message}</div>
+               </div>`
+               $("#chat").append(template)
           }
+
+
+          async function talk(message) {
+               return new Promise(async (resolve, reject) => {
+                    responsiveVoice.speak(message, "Spanish Female", { onend: resolve })
+               })
+          }
+
+          function initChat() {
+               responsiveVoice.speak("Chat de voz activado", "Spanish Female");
+          }
+
+          async function wait(s) {
+               return new Promise(async (resolve, reject) => {
+                    setTimeout(() => {
+                         resolve("TIME_DONE")
+                    }, 1000 * s);
+               })
+          }
+
+          (async () => {
+               while (true) {
+                    await wait(1)
+                    if (messagesQueue.length != 0) {
+                         console.log(messagesQueue.length)
+                         await talk(messagesQueue[0])
+                         messagesQueue.shift()
+                    }
+               }
+          })()
      </script>
 </body>
 
