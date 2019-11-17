@@ -26,6 +26,6 @@ io.on('connection', (socket) => {
      })
 })
 
-server.listen(9922/*3000*/, () =>{
+server.listen(9922, () =>{
      console.log('Chat!')
 });
