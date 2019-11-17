@@ -37,6 +37,45 @@ html,body{
      background-color: #121212;
 }
 
+.warn{
+     color:#e2e2e2 ;
+     background-color: #e75858;
+}
+
+.badge-warn{
+     width: 100%;
+     padding-bottom: 20px;
+}
+
+.warn-title{
+     margin: 0.4em 0em 0.5em 0em;
+     text-align: center; 
+     font-weight: bolder;
+     font-size: 28px;
+     color: #e2e2e2;
+}
+
+.warn-message{
+     text-align: center;
+     padding-bottom: 1em;
+     font-size: 25px;
+}
+
+.warn-btn-text{
+     margin: 0.4em ;
+}
+
+.warn-btn-close{
+     margin: auto;
+     width: 50%;
+     font-weight: bold;
+     text-align: center;
+     font-size: 29px;
+     padding: 1px;
+     background-color: #6b1313;
+     border-radius: 15px;
+}
+
 input.subMode { 
      margin-top: 1em;
      width: 23px; 

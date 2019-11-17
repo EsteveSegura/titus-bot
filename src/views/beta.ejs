@@ -5,14 +5,14 @@
      <meta charset="UTF-8">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <meta http-equiv="X-UA-Compatible" content="ie=edge">
-     <link href="http://girlazo.com/titusbot/css/main.css" rel="stylesheet"> <!-- deploy -->
+     <link href="./css/main.css" rel="stylesheet"> <!-- deploy : <link href="http://girlazo.com/titusbot/css/main.css" rel="stylesheet"> -->
      <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
      <title>Chat</title>
 </head>
 
 <body>
-     <div class="text-center">
-          <div class="fixed-top admin">
+     <div class="text-center fixed-top">
+          <div class=" admin">
                <button id="initchat" onclick="initChat()">Iniciar chat de voz</button><br>
                <input id="check-subMode" type="checkbox" class="subMode" name="field" value="option">
                <label for="check-subMode" class="text-subMode"><span><span></span></span>Modo sub!</label>
@@ -24,15 +24,28 @@
                <div class="message-chat"></div>
           </div>
      </div>
-     <script src="https://code.jquery.com/jquery-3.4.1.min.js">
-     </script>
+
+     <!--
+     <div class="warn">
+          <div class="badge-warn flex-row">
+               <div class="warn-title">¡ALERTA!</div>
+               <div class="warn-message">Esto es un mensaje de peligro, aquie la gente puede escribir o el realizador, tambien se puede usar para otras cosas</div>
+               <div class="warn-btn-close">
+                    <div id="warn" class="warn-btn-text">
+                         Lo he leido
+                    </div>
+               </div>
+          </div>
+     </div>
+     -->
+     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
      <script src="http://code.responsivevoice.org/responsivevoice.js"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
 
      <script>
-          let socket = io.connect('http://80.211.238.132:9922/'); //Deploy
+          let socket = io.connect(); //Deploy io.connect('http://80.211.238.132:9922/');
           let messagesQueue = []
           let subMode = false;
 
@@ -43,6 +56,10 @@
                     subMode = false;
                }
           });
+
+          $("#warn").click(() => {
+               $('#warn').parents(".warn").remove();
+          })
 
           socket.on('voiceChat', async (data) => {
                console.log(data);
