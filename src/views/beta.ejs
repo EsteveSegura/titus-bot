@@ -64,6 +64,7 @@
 
           socket.on('voiceChat', async (data) => {
                console.log(data);
+               if()
                addNewMessageInChat(data.body.author, data.body.message)
                $(document).scrollTop($(document).height());//Scroll bottom
 
