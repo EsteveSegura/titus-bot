@@ -5,7 +5,7 @@ socket.on('connect', function () { });
 
 
 const client = new tmi.Client({
-     options: { debug: true },
+     options: { debug: false },
      connections: {
           reconnect: true,
           secure: true
