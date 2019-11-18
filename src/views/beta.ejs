@@ -29,10 +29,10 @@
      <div class="warn">
           <div class="badge-warn flex-row">
                <div class="warn-title">¡ALERTA!</div>
-               <div class="warn-message">Esto es una alerta de prueba, pulsa "lo he leido"</div>
+               <div class="warn-message">Para empezar a mostrar y escuchar mensajes pulsa "Iniciar chat de voz"</div>
                <div class="warn-btn-close">
                     <div id="warn" class="warn-btn-text">
-                         Lo he leido
+                         Ok, lo he leido
                     </div>
                </div>
           </div>
@@ -97,8 +97,8 @@
           }
 
           function initChat() {
-               responsiveVoice.speak("Chat de voz activado", "Spanish Female");
                permisions = true;
+               responsiveVoice.speak("Chat de voz activado", "Spanish Female");
           }
 
           async function wait(s) {
