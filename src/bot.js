@@ -25,6 +25,14 @@ client.on("chat", (channel, user, message, self) => {
           return;
      }
 
-     console.log(user)
+     //console.log(user)
+     let rawBadges = Object.values(user)
+     if(rawBadges[rawBadges.length-3] != null){
+          if(rawBadges[rawBadges.length-3].includes("founder")){
+               console.log("SI1")
+          }else{
+               console.log("NO")
+          }
+     }
      socket.emit('voiceChat', { message: message, isMod: user.mod || false, isSuscriber: user.subscriber || false, author: user.username  });
 });
