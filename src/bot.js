@@ -1,6 +1,6 @@
 require('dotenv').config()
 const tmi = require('tmi.js');
-let socket = require('socket.io-client')('http://80.211.238.13:9922/'); // Deploy let socket = require('socket.io-client')('http://80.211.238.132:9922/');
+let socket = require('socket.io-client')('http://80.211.238.132/'); // Deploy let socket = require('socket.io-client')('http://80.211.238.132:9922/');
 socket.on('connect', function () { });
 
 

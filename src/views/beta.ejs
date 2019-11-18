@@ -25,11 +25,11 @@
           </div>
      </div>
 
-     <!--
+     
      <div class="warn">
           <div class="badge-warn flex-row">
                <div class="warn-title">¡ALERTA!</div>
-               <div class="warn-message">Esto es un mensaje de peligro, aquie la gente puede escribir o el realizador, tambien se puede usar para otras cosas</div>
+               <div class="warn-message">Esto es una alerta de prueba, pulsa "lo he leido"</div>
                <div class="warn-btn-close">
                     <div id="warn" class="warn-btn-text">
                          Lo he leido
@@ -37,7 +37,7 @@
                </div>
           </div>
      </div>
-     -->
+     
      <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
@@ -45,7 +45,7 @@
      <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
 
      <script>
-          let socket = io.connect('http://80.211.238.132:9922/'); //Deploy io.connect('http://80.211.238.132:9922/');
+          let socket = io.connect('http://80.211.238.132/'); //Deploy io.connect('http://80.211.238.132:9922/');
           let messagesQueue = []
           let subMode = false;
 
@@ -70,6 +70,7 @@
                     if (subMode) {
                          if(data.body.isSuscriber){
                               messagesQueue.push(data.body.message.substr(1))
+                              alert(data.body.message)
                          }
                     }else{
                          messagesQueue.push(data.body.message.substr(1))
