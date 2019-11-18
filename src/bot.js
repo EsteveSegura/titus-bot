@@ -38,40 +38,41 @@ client.on("chat", (channel, user, message, self) => {
 });
 
 client.on("resub", (channel, username, months, message, userstate, methods) => {
-     //let meses = ~~userstate["msg-param-cumulative-months"];
-     //let mess = userstate["msg-param-should-share-streak"];
-     console.log(`channel: ${channel} - username: ${username} - months: ${months} - message: ${message} - userstate: ${userstate}`)
+     let cumulativeMonths = ~~userstate["msg-param-cumulative-months"];
+     let messages = userstate["msg-param-should-share-streak"];
+     console.log("RESUB")
+     console.log(`channel: ${channel} - username: ${username} - months: ${months} - message: ${message} - userstate.messages: ${messages} - cumulativeMonths: ${cumulativeMonths}`)
      //socket.emit('resub', {});
 });
 
 client.on("subgift", (channel, username, streakMonths, recipient, methods, userstate) => {
-     //let senderCount = ~~userstate["msg-param-sender-count"];
-     console.log(`channel: ${channel} - username: ${username} - streakMonths: ${streakMonths} - recipient: ${recipient} - userstate: ${userstate}`)
+     let senderCount = ~~userstate["msg-param-sender-count"];
+     console.log("SUBGIFT")
+     console.log(`channel: ${channel} - username: ${username} - streakMonths: ${streakMonths} - recipient: ${recipient} - senderCount: ${senderCount}`)
      //socket.emit('subgift', {});
 });
 
 client.on("submysterygift", (channel, username, numbOfSubs, methods, userstate) => {
-     //let senderCount = ~~userstate["msg-param-sender-count"];
-     console.log(`channel: ${channel} - username: ${username} - numbOfSubs: ${numbOfSubs} - userstate: ${userstate}`)
+     let senderCount = ~~userstate["msg-param-sender-count"];
+     console.log("SUBMYSTERYGIFT")
+     console.log(`channel: ${channel} - username: ${username} - numbOfSubs: ${numbOfSubs} - senderCount: ${senderCount}`)
      //socket.emit('submysterygift', {});
 });
 
 client.on("subscription", (channel, username, method, message, userstate) => {
+     console.log("SUBSCRIPTION")
      console.log(`channel: ${channel} - username: ${username} - message: ${message} - userstate: ${userstate}`)
      //socket.emit('subscription', {});
 });
 
 client.on("cheer", (channel, userstate, message) => {
-     console.log(`channel: ${channel} - message: ${message} - userstate: ${userstate}`)
+     console.log("CHEER")
+     console.log(`channel: ${channel} - message: ${message} - howManyBits: ${userstate.bits}`)
      //socket.emit('cheer', {});
 });
 
 client.on("hosted", (channel, username, viewers, autohost) => {
+     console.log("HOSTED")
      console.log(`channel: ${channel} - username: ${username} - viewers: ${viewers}`)
      //socket.emit('hosted', {});
-});
-
-client.on("vips", (channel, vips) => {
-     console.log(`channel: ${channel} - vips: ${vips}`)
-     //socket.emit('vips', {});
 });
