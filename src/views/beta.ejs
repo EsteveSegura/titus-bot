@@ -89,7 +89,9 @@
 
           async function talk(message) {
                return new Promise(async (resolve, reject) => {
+                    if(!subMode){
                     responsiveVoice.speak(message, "Spanish Female", { onend: resolve })
+                    }
                })
           }
 
