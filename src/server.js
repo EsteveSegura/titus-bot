@@ -1,4 +1,5 @@
 const http = require('http');
+const cors = require('cors');
 const morgan = require('morgan');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -13,6 +14,7 @@ const io = socketIo(server);
 app.set('views', './views')
 app.set('view engine', 'ejs');
 
+app.use(cors());
 app.use(morgan('dev'));
 app.use(express.static('./public'));
 app.use(bodyParser.urlencoded({ extended: false }));
