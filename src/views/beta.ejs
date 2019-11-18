@@ -64,17 +64,18 @@
 
           socket.on('voiceChat', async (data) => {
                console.log(data);
-               if()
-               addNewMessageInChat(data.body.author, data.body.message)
-               $(document).scrollTop($(document).height());//Scroll bottom
+               if(permisions){
+                    addNewMessageInChat(data.body.author, data.body.message)
+                    $(document).scrollTop($(document).height());//Scroll bottom
 
-               if (data.body.message.startsWith("! ")) {
-                    if (subMode) {
-                         if(data.body.isSuscriber){
+                    if (data.body.message.startsWith("! ")) {
+                         if (subMode) {
+                              if(data.body.isSuscriber){
+                                   messagesQueue.push(data.body.message.substr(1))
+                              }
+                         }else{
                               messagesQueue.push(data.body.message.substr(1))
                          }
-                    }else{
-                         messagesQueue.push(data.body.message.substr(1))
                     }
                }
           });
