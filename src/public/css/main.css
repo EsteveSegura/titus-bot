@@ -21,6 +21,13 @@ html,body{
      color:#bb86fc;
 }
 
+.alert-chat{
+     margin: 0.2em 0.7em 0.5em 0.7em;
+     font-size: 21px;
+     font-weight: bolder;
+     color:#ff0000;
+}
+
 .message-chat{
      margin: 0.2em 0.7em 0.5em 0.2em;
      font-size: 21px;

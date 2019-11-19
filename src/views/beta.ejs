@@ -5,7 +5,8 @@
      <meta charset="UTF-8">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <meta http-equiv="X-UA-Compatible" content="ie=edge">
-     <link href="http://girlazo.com/titusbot/css/main.css" rel="stylesheet"> <!-- deploy : <link href="http://girlazo.com/titusbot/css/main.css" rel="stylesheet"> -->
+     <link href="http://girlazo.com/titusbot/css/main.css" rel="stylesheet">" rel="stylesheet">
+     <!-- deploy : <link href="http://girlazo.com/titusbot/css/main.css" rel="stylesheet"> -->
      <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
      <title>Chat</title>
 </head>
@@ -25,7 +26,7 @@
           </div>
      </div>
 
-     
+
      <div class="warn">
           <div class="badge-warn flex-row">
                <div class="warn-title">¡ALERTA!</div>
@@ -37,7 +38,7 @@
                </div>
           </div>
      </div>
-     
+
      <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
@@ -53,7 +54,7 @@
           $("#check-subMode").change(function () {
                if (this.checked) {
                     subMode = true;
-               }else{
+               } else {
                     subMode = false;
                }
           });
@@ -63,22 +64,76 @@
           })
 
           socket.on('voiceChat', async (data) => {
-               if(permisions){
-                    console.log(data);
+               if (permisions) {
+                    //console.log(data);
                     addNewMessageInChat(data.body.author, data.body.message)
                     $(document).scrollTop($(document).height());//Scroll bottom
 
                     if (data.body.message.startsWith("! ")) {
                          if (subMode) {
-                              if(data.body.isSuscriber){
+                              if (data.body.isSuscriber) {
                                    messagesQueue.push(data.body.message.substr(1))
                               }
-                         }else{
+                         } else {
                               messagesQueue.push(data.body.message.substr(1))
                          }
                     }
                }
           });
+
+          socket.on('resub', async (data) => {
+               if (permisions) {
+                    console.log(data)
+                    if(data.body.userstate["msg-param-should-share-streak"]){
+                         addNewAlertInChat("ReSub",`${data.body.username} se ha resuscrito ${data.body.months} meses, acumulando un total de ${data.body.cumulativeMonths} meses de subscripción, y su mensaje es ${data.body.message}`)
+                         messagesQueue.push(`${data.body.username} se ha resuscrito ${data.body.months} meses, acumulando un total de ${data.body.cumulativeMonths} meses de subscripción, y su mensaje es ${data.body.message}`)
+                    }else{
+                         addNewAlertInChat("ReSub",`${data.body.username} se ha resuscrito, acumulando un total de ${data.body.cumulativeMonths} meses de subscripción, y su mensaje es ${data.body.message}`)
+                         messagesQueue.push(`${data.body.username} se ha resuscrito, acumulando un total de ${data.body.cumulativeMonths} meses de subscripción, y su mensaje es ${data.body.message}`)
+                    }
+               }
+          });
+
+          socket.on('subgift', async (data) => {
+               if (permisions) {
+                    console.log(data)
+                    addNewAlertInChat("Regalo de sub",`${data.body.username} ha regalado una subscripción a ${data.body.recipient}`)
+                    messagesQueue.push(`${data.body.username} ha regalado una subscripción a ${data.body.recipient}`)
+               }
+          });
+
+          socket.on('submysterygift', async (data) => {
+               if (permisions) {
+                    console.log(data)
+               }
+          });
+
+          socket.on('subscription', async (data) => {
+               if (permisions) {
+                    console.log(data)
+                    addNewAlertInChat("Subscripción",`${data.body.username} se ha suscrito, con el mensaje:${data.body.message}`)
+                    messagesQueue.push(`${data.body.username} se ha suscrito, con el mensaje:${data.body.message}`)
+               }
+          });
+
+          socket.on('cheer', async (data) => {
+               if (permisions) {
+                    console.log(data)
+                    addNewAlertInChat("Cheer",`${data.body.username} ha dejado ${data.body.howManyBits} bits, con el mensaje:${data.body.message}`)
+                    messagesQueue.push(`${data.body.username} ha dejado ${data.body.howManyBits} bits, con el mensaje:${data.body.message}`)
+               }
+          });
+
+          socket.on('hosted', async (data) => {
+               if (permisions) {
+                    console.log(data)
+                    addNewAlertInChat("Host",`${data.body.username} ha hosteado con ${data.body.howManyBits}, con el mensaje:${data.body.viewers} personas`)
+                    messagesQueue.push(`${data.body.username} ha hosteado con ${data.body.howManyBits}, con el mensaje:${data.body.viewers} personas`)
+                    
+               }
+          });
+
+          
 
 
           function addNewMessageInChat(user, message) {
@@ -89,10 +144,17 @@
                $("#chat").append(template)
           }
 
+          function addNewAlertInChat(event, message) {
+               let template = `<div class="badge-chat d-flex flex-row">
+                    <div class="alert-chat"><strong>${event}</strong> ${message} </div>
+               </div>`
+               $("#chat").append(template)
+          }
+
 
           async function talk(message) {
                return new Promise(async (resolve, reject) => {
-                    if(permisions){
+                    if (permisions) {
                          responsiveVoice.speak(message, "Spanish Female", { onend: resolve })
                     }
                })

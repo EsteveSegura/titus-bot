@@ -23,9 +23,39 @@ app.use('/', routes);
 
 io.on('connection', (socket) => {
      socket.on('voiceChat', (body) => {
-          console.log(body)
           socket.broadcast.emit('voiceChat', {body})
-     })
+     });
+
+     socket.on('resub', (body) => {
+          console.log(body)
+          socket.broadcast.emit('resub', {body})
+     });
+
+     socket.on('subgift', (body) => {
+          console.log(body)
+          socket.broadcast.emit('subgift', {body})
+     });
+
+     socket.on('submysterygift', (body) => {
+          console.log(body)
+          socket.broadcast.emit('submysterygift', {body})
+     });
+
+     socket.on('subscription', (body) => {
+          console.log(body)
+          socket.broadcast.emit('subscription', {body})
+     });
+
+     socket.on('cheer', (body) => {
+          console.log(body)
+          socket.broadcast.emit('cheer', {body})
+     });
+
+     socket.on('hosted', (body) => {
+          console.log(body)
+          socket.broadcast.emit('hosted', {body})
+     });
+
 })
 
 server.listen(9922, () =>{
