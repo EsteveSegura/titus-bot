@@ -20,7 +20,7 @@ const client = new tmi.Client({
 client.connect();
 
 client.on("chat", (channel, user, message, self) => {
-
+     let isSuscriber = user.subscriber
      if (self) {
           return;
      }
@@ -29,12 +29,11 @@ client.on("chat", (channel, user, message, self) => {
      let rawBadges = Object.values(user)
      if (rawBadges[rawBadges.length - 3] != null) {
           if (rawBadges[rawBadges.length - 3].includes("founder")) {
-               //console.log("SI1")
-          } else {
-               //console.log("NO")
+               isSuscriber = true
           }
      }
-     socket.emit('voiceChat', { message: message, isMod: user.mod || false, isSuscriber: user.subscriber || false, author: user.username });
+     
+     socket.emit('voiceChat', { message: message, isMod: user.mod || false, isSuscriber: isSuscriber, author: user.username });
 });
 
 client.on("resub", (channel, username, months, message, userstate, methods) => {
