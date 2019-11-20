@@ -1,14 +1,17 @@
-//const axios = require('axios');
+require('dotenv').config()
 const express = require('express');
 const router = express.Router();
 
 
 router.get('/', (req,res) => {
-     res.render('beta.ejs')
+     res.send('Entrar en http://girlazo.com/titusbot/chat')
 });
 
 router.get('/chat', (req,res) => {
-     res.render('beta.ejs')
+     res.render('beta.ejs', {
+          css: process.env.STYLE || './css/main.css',
+          socket : process.env.SOCKET || 'http://localhost:9922'
+     })
 });
 
 router.post('/sendMessage' ,(req,res) => {
