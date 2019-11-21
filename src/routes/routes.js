@@ -10,7 +10,8 @@ router.get('/', (req,res) => {
 router.get('/chat', (req,res) => {
      res.render('beta.ejs', {
           css: process.env.STYLE || './css/main.css',
-          socket : process.env.SOCKET || 'http://localhost:9922'
+          socket : process.env.SOCKET || 'http://localhost:9922',
+          audio : process.env.AUDIO || './audio/Alert.wav'
      })
 });
 
