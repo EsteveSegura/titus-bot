@@ -11,20 +11,22 @@
 </head>
 
 <body>
+     <audio id="alertAudio">
+          <source src="./audio/Alert.wav" type="audio/wav">
+     </audio>
      <div class="text-center fixed-top">
-          <div class=" admin">
-               <button id="initchat" onclick="initChat()">Iniciar chat de voz</button><br>
-               <input id="check-subMode" type="checkbox" class="subMode" name="field" value="option">
+          <div class="admin">
+               <input id="check-subMode" type="checkbox" class="subMode" name="field" value="option" checked>
                <label for="check-subMode" class="text-subMode"><span><span></span></span>¡Modo sub!</label>
+               <br>
+               <button id="initchat" onclick="initChat()">Iniciar chat de voz</button>
           </div>
      </div>
      <div id="chat" class="chat">
           <div class="badge-chat d-flex flex-row">
-               <div class="user-chat">¡Chat iniciado!</div>
-               <div class="message-chat"></div>
+
           </div>
      </div>
-
 
      <div class="warn">
           <div class="badge-warn flex-row">
@@ -47,9 +49,15 @@
      <script>
           let socket = io.connect('<%=socket%>');
           let messagesQueue = []
-          let subMode = false;
+          let subMode = true;
           let permisions = false;
+          let sound = document.getElementById("alertAudio");
 
+          function playAlert() {
+               sound.play();
+          }
+ 
+          
           $("#check-subMode").change(function () {
                if (this.checked) {
                     subMode = true;
@@ -83,12 +91,12 @@
           socket.on('resub', async (data) => {
                if (permisions) {
                     console.log(data)
-                    if(data.body.userstate["msg-param-should-share-streak"]){
-                         addNewAlertInChat("ReSub",`${data.body.username} se ha resuscrito ${data.body.months} meses, acumulando un total de ${data.body.cumulativeMonths} meses de subscripción, y su mensaje es ${data.body.message}`)
-                         messagesQueue.push(`${data.body.username} se ha resuscrito ${data.body.months} meses, acumulando un total de ${data.body.cumulativeMonths} meses de subscripción, y su mensaje es ${data.body.message}`)
-                    }else{
-                         addNewAlertInChat("ReSub",`${data.body.username} se ha resuscrito, acumulando un total de ${data.body.cumulativeMonths} meses de subscripción, y su mensaje es ${data.body.message}`)
-                         messagesQueue.push(`${data.body.username} se ha resuscrito, acumulando un total de ${data.body.cumulativeMonths} meses de subscripción, y su mensaje es ${data.body.message}`)
+                    if (data.body.userstate["msg-param-should-share-streak"]) {
+                         addNewAlertInChat("ReSub", `${data.body.username} se ha resuscrito ${data.body.months} meses, acumulando un total de ${data.body.cumulativeMonths} meses de subscripción, y su mensaje es ${data.body.message}`)
+                         messagesQueue.push(`${data.body.username} se ha resuscrito ${data.body.months} meses, acumulando un total de ${data.body.cumulativeMonths} meses de subscripción, y su mensaje es ${data.body.message} --Alert--`)
+                    } else {
+                         addNewAlertInChat("ReSub", `${data.body.username} se ha resuscrito, acumulando un total de ${data.body.cumulativeMonths} meses de subscripción, y su mensaje es ${data.body.message}`)
+                         messagesQueue.push(`${data.body.username} se ha resuscrito, acumulando un total de ${data.body.cumulativeMonths} meses de subscripción, y su mensaje es ${data.body.message} --Alert--`)
                     }
                }
           });
@@ -96,8 +104,8 @@
           socket.on('subgift', async (data) => {
                if (permisions) {
                     console.log(data)
-                    addNewAlertInChat("Regalo de sub",`${data.body.username} ha regalado una subscripción a ${data.body.recipient}`)
-                    messagesQueue.push(`${data.body.username} ha regalado una subscripción a ${data.body.recipient}`)
+                    addNewAlertInChat("Regalo de sub", `${data.body.username} ha regalado una subscripción a ${data.body.recipient}`)
+                    messagesQueue.push(`${data.body.username} ha regalado una subscripción a ${data.body.recipient} --Alert--`)
                }
           });
 
@@ -110,30 +118,36 @@
           socket.on('subscription', async (data) => {
                if (permisions) {
                     console.log(data)
-                    addNewAlertInChat("Subscripción",`${data.body.username} se ha suscrito, con el mensaje:${data.body.message}`)
-                    messagesQueue.push(`${data.body.username} se ha suscrito, con el mensaje:${data.body.message}`)
+                    addNewAlertInChat("Subscripción", `${data.body.username} se ha suscrito, con el mensaje:${data.body.message}`)
+                    messagesQueue.push(`${data.body.username} se ha suscrito, con el mensaje:${data.body.message} --Alert--`)
                }
           });
 
           socket.on('cheer', async (data) => {
                if (permisions) {
                     console.log(data)
-                    addNewAlertInChat("Cheer",`${data.body.username} ha dejado ${data.body.howManyBits} bits, con el mensaje:${data.body.message}`)
-                    messagesQueue.push(`${data.body.username} ha dejado ${data.body.howManyBits} bits, con el mensaje:${data.body.message}`)
+                    addNewAlertInChat("Cheer", `${data.body.username} ha dejado ${data.body.howManyBits} bits, con el mensaje:${data.body.message}`)
+                    messagesQueue.push(`${data.body.username} ha dejado ${data.body.howManyBits} bits, con el mensaje:${data.body.message} --Alert--`)
                }
           });
 
           socket.on('hosted', async (data) => {
                if (permisions) {
                     console.log(data)
-                    addNewAlertInChat("Host",`${data.body.username} ha hosteado con ${data.body.howManyBits}, con el mensaje:${data.body.viewers} personas`)
-                    messagesQueue.push(`${data.body.username} ha hosteado con ${data.body.howManyBits}, con el mensaje:${data.body.viewers} personas`)
-                    
+                    addNewAlertInChat("Host", `${data.body.username} ha hosteado con ${data.body.viewers} personas`)
+                    messagesQueue.push(`${data.body.username} ha hosteado con ${data.body.viewers} personas --Alert--`)
+
                }
           });
 
-          
+          socket.on('raided', async (data) => {
+               if (permisions) {
+                    console.log(data)
+                    addNewAlertInChat("Raid", `${data.body.username} ha raideado con ${data.body.viewers} personas`)
+                    messagesQueue.push(`${data.body.username} ha raideado con ${data.body.viewers} personas --Alert--`)
 
+               }
+          });
 
           function addNewMessageInChat(user, message) {
                let template = `<div class="badge-chat d-flex flex-row">
@@ -150,7 +164,6 @@
                $("#chat").append(template)
           }
 
-
           async function talk(message) {
                return new Promise(async (resolve, reject) => {
                     if (permisions) {
@@ -162,6 +175,8 @@
           function initChat() {
                permisions = true;
                responsiveVoice.speak("Chat de voz activado", "Spanish Female");
+               addNewMessageInChat('¡Chat inciado!', 'Conexión con exito.')
+               $("#initchat").remove()
           }
 
           async function wait(s) {
@@ -177,6 +192,10 @@
                     await wait(1)
                     if (messagesQueue.length != 0) {
                          console.log(messagesQueue.length)
+                         if(messagesQueue[0].includes('--Alert--')){
+                              messagesQueue[0] = messagesQueue[0].replace('--Alert--','')
+                              playAlert()
+                         }
                          await talk(messagesQueue[0])
                          messagesQueue.shift()
                     }

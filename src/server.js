@@ -55,9 +55,13 @@ io.on('connection', (socket) => {
           console.log(body)
           socket.broadcast.emit('hosted', {body})
      });
-
-})
+     
+     socket.on('raided', (body) => {
+          console.log(body)
+          socket.broadcast.emit('raided', {body})
+     });
+});
 
 server.listen(9922, () =>{
-     console.log('Chat!')
+     console.log('El bot esta inciado.')
 });
