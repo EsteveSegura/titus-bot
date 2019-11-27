@@ -9,6 +9,10 @@ const client = new tmi.Client({
           reconnect: true,
           secure: true
      },
+     identity: {
+          username: 'bot_titus',
+          password: process.env.TOKEN
+     },
 
      channels: ['titus_clan']
 
@@ -24,7 +28,7 @@ socket.on("connect", () => {
 
 //When time out, reconnect
 client.on("timeout", (channel, username, reason, duration, userstate) => {
-     client.connect();
+     console.log("TIME OUT")
 });
 
 
@@ -75,5 +79,5 @@ client.on("hosted", (channel, username, viewers, autohost) => {
 });
 
 client.on("raided", (channel, username, viewers) => {
-     socket.emit('raided', {'username': username, 'viewers':viewers})
+     socket.emit('raided', { 'username': username, 'viewers': viewers })
 });
