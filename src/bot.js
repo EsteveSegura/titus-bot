@@ -29,6 +29,7 @@ socket.on("connect", () => {
 //When time out, reconnect
 client.on("timeout", (channel, username, reason, duration, userstate) => {
      console.log("TIME OUT")
+     console.log(reason)
 });
 
 
