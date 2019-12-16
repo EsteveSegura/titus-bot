@@ -3,7 +3,7 @@ const tmi = require('tmi.js');
 let socket = require('socket.io-client')(process.env.SOCKET || 'http://localhost:9922/');
 
 const client = new tmi.Client({
-     options: { debug: true },
+     options: { debug: false },
 
      connections: {
           reconnect: true,
@@ -39,6 +39,8 @@ client.on("chat", (channel, user, message, self) => {
           return;
      }
 
+     //console.log(message)
+
      //if is "founder" also is suscriber
      let isSuscriber = user.subscriber
      let rawBadges = Object.values(user)
@@ -55,30 +57,37 @@ client.on("resub", (channel, username, months, message, userstate, methods) => {
      let cumulativeMonths = ~~userstate["msg-param-cumulative-months"];
      let messages = userstate["msg-param-should-share-streak"];
      socket.emit('resub', { 'username': username, 'cumulativeMonths': cumulativeMonths, 'months': months, 'message': message });
+     console.log('resub')
 });
 
 client.on("subgift", (channel, username, streakMonths, recipient, methods, userstate) => {
      let senderCount = ~~userstate["msg-param-sender-count"];
      socket.emit('subgift', { 'username': username, 'streakMonths': streakMonths, 'recipient': recipient, 'senderCount': senderCount });
+     console.log('subgift')
 });
 
 client.on("submysterygift", (channel, username, numbOfSubs, methods, userstate) => {
      let senderCount = ~~userstate["msg-param-sender-count"];
      socket.emit('submysterygift', { 'username': username, 'senderCount': senderCount });
+     console.log('submysterygift')
 });
 
 client.on("subscription", (channel, username, method, message, userstate) => {
      socket.emit('subscription', { 'username': username, 'message': message });
+     console.log('subscription')
 });
 
 client.on("cheer", (channel, userstate, message) => {
      socket.emit('cheer', { 'username': userstate.username, 'message': message, 'howManyBits': userstate.bits });
+     console.log('cheer')
 });
 
 client.on("hosted", (channel, username, viewers, autohost) => {
      socket.emit('hosted', { 'username': username, 'viewers': viewers });
+     console.log('hosted')
 });
 
 client.on("raided", (channel, username, viewers) => {
      socket.emit('raided', { 'username': username, 'viewers': viewers })
+     console.log('raided')
 });

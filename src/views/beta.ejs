@@ -91,13 +91,16 @@
           socket.on('resub', async (data) => {
                if (permisions) {
                     console.log(data)
-                    if (data.body.userstate["msg-param-should-share-streak"]) {
+                    console.log("RESUB de" + data.body.username)
+                         addNewAlertInChat("ReSub", `${data.body.username} se ha resuscrito ${data.body.months} meses, acumulando un total de ${data.body.cumulativeMonths} meses de subscripción, y su mensaje es ${data.body.message}`)
+                         messagesQueue.push(`${data.body.username} se ha resuscrito, acumulando un total de ${data.body.cumulativeMonths} meses de subscripción, y su mensaje es ${data.body.message} --Alert--`)
+                    /*if (data.body.userstate["msg-param-should-share-streak"]) {
                          addNewAlertInChat("ReSub", `${data.body.username} se ha resuscrito ${data.body.months} meses, acumulando un total de ${data.body.cumulativeMonths} meses de subscripción, y su mensaje es ${data.body.message}`)
                          messagesQueue.push(`${data.body.username} se ha resuscrito ${data.body.months} meses, acumulando un total de ${data.body.cumulativeMonths} meses de subscripción, y su mensaje es ${data.body.message} --Alert--`)
                     } else {
                          addNewAlertInChat("ReSub", `${data.body.username} se ha resuscrito, acumulando un total de ${data.body.cumulativeMonths} meses de subscripción, y su mensaje es ${data.body.message}`)
                          messagesQueue.push(`${data.body.username} se ha resuscrito, acumulando un total de ${data.body.cumulativeMonths} meses de subscripción, y su mensaje es ${data.body.message} --Alert--`)
-                    }
+                    }*/
                }
           });
 

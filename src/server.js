@@ -27,41 +27,48 @@ io.on('connection', (socket) => {
      });
 
      socket.on('resub', (body) => {
+          console.log("Recibiendo resub")
           console.log(body)
           socket.broadcast.emit('resub', {body})
      });
 
      socket.on('subgift', (body) => {
+          console.log("Recibiendo subgift")
           console.log(body)
           socket.broadcast.emit('subgift', {body})
      });
 
      socket.on('submysterygift', (body) => {
+          console.log("Recibiendo submysterygift")
           console.log(body)
           socket.broadcast.emit('submysterygift', {body})
      });
 
      socket.on('subscription', (body) => {
+          console.log("Recibiendo subscription")
           console.log(body)
           socket.broadcast.emit('subscription', {body})
      });
 
      socket.on('cheer', (body) => {
+          console.log("Recibiendo cheer")
           console.log(body)
           socket.broadcast.emit('cheer', {body})
      });
 
      socket.on('hosted', (body) => {
+          console.log("Recibiendo hosted")
           console.log(body)
           socket.broadcast.emit('hosted', {body})
      });
      
      socket.on('raided', (body) => {
+          console.log("Recibiendo raided")
           console.log(body)
           socket.broadcast.emit('raided', {body})
      });
 });
 
 server.listen(9922, () =>{
-     console.log('El bot esta inciado.')
+     console.log('El bot esta inciado. => http://localhost:9922/')
 });
