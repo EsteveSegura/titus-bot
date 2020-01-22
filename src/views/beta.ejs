@@ -7,17 +7,32 @@
      <meta http-equiv="X-UA-Compatible" content="ie=edge">
      <link href="<%=css%>" rel="stylesheet">
      <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.css">
      <title>Chat</title>
 </head>
 
 <body>
+
+     <div id="flash" class="flash-off">
+
+     </div>
      <audio id="alertAudio">
           <source src="<%=audio%>" type="audio/wav">
      </audio>
      <div class="text-center fixed-top">
           <div class="admin">
+               <div class="info-container">
+                    <div class="info-element">
+                         <span class="info-key">views:</span>
+                         <span class="info-value" id="viewers-info"> <span style="font-size:9px">Esperando info</span> </span>
+                    </div>
+                    <div class="info-element">
+                         <span class="info-key">type:</span>
+                         <span class="info-value" id="type-info"><span style="font-size:9px">Esperando info</span> </span>
+                    </div>
+               </div>
                <input id="check-subMode" type="checkbox" class="subMode" name="field" value="option" checked>
-               <label for="check-subMode" class="text-subMode"><span><span></span></span>¡Modo sub!</label>
+               <label for="check-subMode" class="text-subMode">¡Modo sub!</label>
                <br>
                <button id="initchat" onclick="initChat()">Iniciar chat de voz</button>
           </div>
@@ -45,7 +60,7 @@
      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
      <script src="http://code.responsivevoice.org/responsivevoice.js"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
-
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
      <script>
           let socket = io.connect('<%=socket%>');
           let messagesQueue = []
@@ -56,8 +71,8 @@
           function playAlert() {
                sound.play();
           }
- 
-          
+
+
           $("#check-subMode").change(function () {
                if (this.checked) {
                     subMode = true;
@@ -73,7 +88,7 @@
           socket.on('voiceChat', async (data) => {
                if (permisions) {
                     //console.log(data);
-                    addNewMessageInChat(data.body.author, data.body.message)
+                    addNewMessageInChat(data.body.author, data.body.message, data.body.badge)
                     $(document).scrollTop($(document).height());//Scroll bottom
 
                     if (data.body.message.startsWith("! ")) {
@@ -92,21 +107,14 @@
                if (permisions) {
                     console.log(data)
                     console.log("RESUB de" + data.body.username)
-                         addNewAlertInChat("ReSub", `${data.body.username} se ha resuscrito ${data.body.months} meses, acumulando un total de ${data.body.cumulativeMonths} meses de subscripción, y su mensaje es ${data.body.message}`)
-                         messagesQueue.push(`${data.body.username} se ha resuscrito, acumulando un total de ${data.body.cumulativeMonths} meses de subscripción, y su mensaje es ${data.body.message} --Alert--`)
-                    /*if (data.body.userstate["msg-param-should-share-streak"]) {
-                         addNewAlertInChat("ReSub", `${data.body.username} se ha resuscrito ${data.body.months} meses, acumulando un total de ${data.body.cumulativeMonths} meses de subscripción, y su mensaje es ${data.body.message}`)
-                         messagesQueue.push(`${data.body.username} se ha resuscrito ${data.body.months} meses, acumulando un total de ${data.body.cumulativeMonths} meses de subscripción, y su mensaje es ${data.body.message} --Alert--`)
-                    } else {
-                         addNewAlertInChat("ReSub", `${data.body.username} se ha resuscrito, acumulando un total de ${data.body.cumulativeMonths} meses de subscripción, y su mensaje es ${data.body.message}`)
-                         messagesQueue.push(`${data.body.username} se ha resuscrito, acumulando un total de ${data.body.cumulativeMonths} meses de subscripción, y su mensaje es ${data.body.message} --Alert--`)
-                    }*/
+                    addNewAlertInChat("ReSub", `${data.body.username} se ha resuscrito ${data.body.months} meses, acumulando un total de ${data.body.cumulativeMonths} meses de subscripción, y su mensaje es ${data.body.message}`)
+                    messagesQueue.push(`${data.body.username} se ha resuscrito, acumulando un total de ${data.body.cumulativeMonths} meses de subscripción, y su mensaje es ${data.body.message} --Alert--`)
                }
           });
 
           socket.on('subgift', async (data) => {
                if (permisions) {
-                    console.log(data)
+                    //console.log(data)
                     addNewAlertInChat("Regalo de sub", `${data.body.username} ha regalado una subscripción a ${data.body.recipient}`)
                     messagesQueue.push(`${data.body.username} ha regalado una subscripción a ${data.body.recipient} --Alert--`)
                }
@@ -114,21 +122,28 @@
 
           socket.on('submysterygift', async (data) => {
                if (permisions) {
-                    console.log(data)
+                    //console.log(data)
                }
           });
 
           socket.on('subscription', async (data) => {
                if (permisions) {
-                    console.log(data)
+                    //console.log(data)
                     addNewAlertInChat("Subscripción", `${data.body.username} se ha suscrito, con el mensaje:${data.body.message}`)
                     messagesQueue.push(`${data.body.username} se ha suscrito, con el mensaje:${data.body.message} --Alert--`)
                }
           });
 
+          socket.on('infoAboutStream', async (data) => {
+               $("#viewers-info").html(data.body.viewer_count)
+               $("#type-info").html(data.body.type)
+               console.log(data)
+
+          })
+
           socket.on('cheer', async (data) => {
                if (permisions) {
-                    console.log(data)
+                    //console.log(data)
                     addNewAlertInChat("Cheer", `${data.body.username} ha dejado ${data.body.howManyBits} bits, con el mensaje:${data.body.message}`)
                     messagesQueue.push(`${data.body.username} ha dejado ${data.body.howManyBits} bits, con el mensaje:${data.body.message} --Alert--`)
                }
@@ -136,7 +151,7 @@
 
           socket.on('hosted', async (data) => {
                if (permisions) {
-                    console.log(data)
+                    //console.log(data)
                     addNewAlertInChat("Host", `${data.body.username} ha hosteado con ${data.body.viewers} personas`)
                     messagesQueue.push(`${data.body.username} ha hosteado con ${data.body.viewers} personas --Alert--`)
 
@@ -145,15 +160,43 @@
 
           socket.on('raided', async (data) => {
                if (permisions) {
-                    console.log(data)
+                    //console.log(data)
                     addNewAlertInChat("Raid", `${data.body.username} ha raideado con ${data.body.viewers} personas`)
                     messagesQueue.push(`${data.body.username} ha raideado con ${data.body.viewers} personas --Alert--`)
 
                }
           });
 
-          function addNewMessageInChat(user, message) {
+          function addNewMessageInChat(user, message, badge) {
+               const availablebadges = {
+                    sub: './img/sub.svg',
+                    user: './img/user.svg',
+               }
+               let actualbadge = null
+               if (typeof badge == "undefined" || typeof badge == "null") {
+                    console.log("No tiene placa en el chat")
+               } else {
+                    if (badge != {}) {
+                         try {
+                              switch (Object.keys(badge)[0]) {
+                                   case 'subscriber':
+                                        actualbadge = availablebadges.sub;
+                                        break;
+
+                                   default:
+                                        actualbadge = null;
+                                        break;
+                              }
+
+                         } catch (error) {
+                              console.log("Something went wrong, but we keep going forward!")
+                              actualbadge = availablebadges.user;
+                         }
+                    }
+               }
+
                let template = `<div class="badge-chat d-flex flex-row">
+               <div class="show-badge"> <img class="badge" src="${actualbadge}" alt="chat badge" ></div>
                <div class="user-chat">${user}:</div>
                <div class="message-chat">${message}</div>
                </div>`
@@ -161,7 +204,7 @@
           }
 
           function addNewAlertInChat(event, message) {
-               let template = `<div class="badge-chat d-flex flex-row">
+               let template = `<div class="alert-in-chat d-flex flex-row">
                     <div class="alert-chat"><strong>${event}</strong> ${message} </div>
                </div>`
                $("#chat").append(template)
@@ -175,28 +218,49 @@
                })
           }
 
+          async function flashOnScreen(iterations) {
+               let flashElement = document.getElementById('flash')
+               for (let i = 0; i < iterations; i++) {
+                    flashElement.classList.add('flash')
+                    flashElement.classList.add('fixed-top')
+
+                    await wait(10);
+                    flashElement.classList.remove('flash')
+                    flashElement.classList.remove('fixed-top')
+                    await wait(10);
+               }
+          }
+
+
           function initChat() {
                permisions = true;
                responsiveVoice.speak("Chat de voz activado", "Spanish Female");
-               addNewMessageInChat('¡Chat inciado!', 'Conexión con exito.')
+               addNewMessageInChat('¡Chat inciado!', 'Conexión con exito.', {})
                $("#initchat").remove()
           }
 
-          async function wait(s) {
+          async function wait(ms) {
                return new Promise(async (resolve, reject) => {
                     setTimeout(() => {
                          resolve("TIME_DONE")
-                    }, 1000 * s);
+                    }, ms);
                })
           }
-
+          /*
+          $.toast({
+               heading: 'Una notificación nueva',
+               text: 'Una persona nueva te ha seguido',
+               hideAfter: 60000,
+               icon: 'success'
+          });*/
+          
           (async () => {
                while (true) {
-                    await wait(1)
+                    await wait(1000)
                     if (messagesQueue.length != 0) {
                          console.log(messagesQueue.length)
-                         if(messagesQueue[0].includes('--Alert--')){
-                              messagesQueue[0] = messagesQueue[0].replace('--Alert--','')
+                         if (messagesQueue[0].includes('--Alert--')) {
+                              messagesQueue[0] = messagesQueue[0].replace('--Alert--', '')
                               playAlert()
                          }
                          await talk(messagesQueue[0])
@@ -204,7 +268,23 @@
                     }
                }
           })()
+
+
      </script>
 </body>
 
 </html>
+
+
+
+<!--
+$.toast({
+    heading: 'Can I add <em>icons</em>?',
+    text: 'Yes! check this <a href="https://github.com/kamranahmedse/jquery-toast-plugin/commits/master">update</a>.',
+    hideAfter: false,
+    icon: 'success'
+})
+
+
+
+-->

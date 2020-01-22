@@ -67,6 +67,11 @@ io.on('connection', (socket) => {
           console.log(body)
           socket.broadcast.emit('raided', {body})
      });
+
+     socket.on('infoAboutStream', (body) => {
+          console.log(body);
+          socket.broadcast.emit('infoAboutStream', {body});
+     });
 });
 
 server.listen(9922, () =>{

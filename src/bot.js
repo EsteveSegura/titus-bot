@@ -1,9 +1,18 @@
 require('dotenv').config()
 const tmi = require('tmi.js');
+const axios = require('axios');
+const { exec } = require('child_process');
+const twitchApi = require('./utils/twitchApi');
 let socket = require('socket.io-client')(process.env.SOCKET || 'http://localhost:9922/');
 
+/*
+TOKEN
+CLIENT_ID
+CLIENT_SECRET
+*/
+
 const client = new tmi.Client({
-     options: { debug: false },
+     options: { debug: true },
 
      connections: {
           reconnect: true,
@@ -15,7 +24,6 @@ const client = new tmi.Client({
      },
 
      channels: ['titus_clan']
-
 });
 
 //Connect default
@@ -28,6 +36,9 @@ socket.on("connect", () => {
 
 //When time out, reconnect
 client.on("timeout", (channel, username, reason, duration, userstate) => {
+     exec("pm2 restart 18", (err, stdout, stderr) => {
+          console.log('reset')
+     });
      console.log("TIME OUT")
      console.log(reason)
 });
@@ -35,11 +46,12 @@ client.on("timeout", (channel, username, reason, duration, userstate) => {
 
 //when messages arrive
 client.on("chat", (channel, user, message, self) => {
+
      if (self) {
           return;
      }
 
-     //console.log(message)
+     console.log(user["badge-info"])
 
      //if is "founder" also is suscriber
      let isSuscriber = user.subscriber
@@ -50,7 +62,7 @@ client.on("chat", (channel, user, message, self) => {
           }
      }
 
-     socket.emit('voiceChat', { message: message, isMod: user.mod || false, isSuscriber: isSuscriber, author: user.username });
+     socket.emit('voiceChat', { message: message, badge: user['badge-info'], isMod: user.mod || false, isSuscriber: isSuscriber, author: user.username });
 });
 
 client.on("resub", (channel, username, months, message, userstate, methods) => {
@@ -91,3 +103,21 @@ client.on("raided", (channel, username, viewers) => {
      socket.emit('raided', { 'username': username, 'viewers': viewers })
      console.log('raided')
 });
+
+
+
+setInterval(async () => {
+     let currentStreamStatus = await twitchApi.getStream(client.opts.channels[0].replace('#', ''))
+     socket.emit('infoAboutStream', { "viewer_count": currentStreamStatus[0].viewer_count, "type": currentStreamStatus[0].type })
+     console.log(currentStreamStatus[0].type)
+     console.log(currentStreamStatus[0].viewer_count)
+}, 60000 * 2);
+
+
+//TEST AREA
+//https://dev.twitch.tv/docs/api/reference#get-streams
+//token & client ID
+
+
+
+//TEST AREA
