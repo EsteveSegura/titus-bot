@@ -56,9 +56,9 @@ client.on("chat", (channel, user, message, self) => {
      }
 
      if(user.mod && message == "!reset"){
+          client.say(channel,"El bot se va a reinciar... Los mensajes de los proximos 5 segundos, no seran recibidos por titus.")
           exec("pm2 restart 18", (err, stdout, stderr) => {
                console.log('reset')
-               client.say(channel,"He reiniciado el bot con el mensaje Null! =D")
                console.log(stdout)
           });
      }
