@@ -51,6 +51,20 @@ client.on("chat", (channel, user, message, self) => {
           return;
      }
 
+     if(user.mod && message == "!restartbot"){
+          exec("pm2 restart 18", (err, stdout, stderr) => {
+               console.log('reset')
+               console.log(stdout)
+          });
+     }
+
+     
+     if(user.mod && message == "!restartbot"){
+          exec("pm2 restart 18", (err, stdout, stderr) => {
+               console.log('reset')
+          });
+     }
+
      console.log(user["badge-info"])
 
      //if is "founder" also is suscriber
