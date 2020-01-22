@@ -51,19 +51,18 @@ client.on("chat", (channel, user, message, self) => {
           return;
      }
 
-     if(user.mod && message == "!restartbot"){
+     if(user.mod && message == "!help"){
+          client.say(channel,"Pues no hay muchos comandos por ahora\n!reset : Si el chat de voz no funciona, usa este comando")
+     }
+
+     if(user.mod && message == "!reset"){
           exec("pm2 restart 18", (err, stdout, stderr) => {
                console.log('reset')
+               client.say(channel,"He reiniciado el bot con el mensaje Null! =D")
                console.log(stdout)
           });
      }
 
-     
-     if(user.mod && message == "!restartbot"){
-          exec("pm2 restart 18", (err, stdout, stderr) => {
-               console.log('reset')
-          });
-     }
 
      console.log(user["badge-info"])
 
@@ -119,14 +118,14 @@ client.on("raided", (channel, username, viewers) => {
 });
 
 
-
+/*
 setInterval(async () => {
      let currentStreamStatus = await twitchApi.getStream(client.opts.channels[0].replace('#', ''))
      socket.emit('infoAboutStream', { "viewer_count": currentStreamStatus[0].viewer_count, "type": currentStreamStatus[0].type })
      console.log(currentStreamStatus[0].type)
      console.log(currentStreamStatus[0].viewer_count)
 }, 60000 * 2);
-
+*/
 
 //TEST AREA
 //https://dev.twitch.tv/docs/api/reference#get-streams
