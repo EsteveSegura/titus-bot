@@ -23,7 +23,7 @@ const client = new tmi.Client({
           password: process.env.TOKEN
      },
 
-     channels: ['trainwreckstv']
+     channels: ['titus_clan']
 });
 
 //Connect default

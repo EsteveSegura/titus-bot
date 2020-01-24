@@ -84,7 +84,6 @@
           window.onscroll = function (ev) {
                if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
                     canGoTobottom = true
-                    console.log("you're at the bottom of the page");
                     $("#new-messages").addClass("hide")
                }else{
                     canGoTobottom = false
@@ -167,7 +166,6 @@
                $("#viewers-info").html(data.body.viewer_count)
                $("#type-info").html(data.body.type)
                console.log(data)
-
           })
 
           socket.on('cheer', async (data) => {
@@ -218,7 +216,7 @@
                               }
 
                          } catch (error) {
-                              console.log("Something went wrong, but we keep going forward!")
+//                              console.log("Something went wrong, but we keep going forward!")
                               actualbadge = availablebadges.user;
                          }
                     }
