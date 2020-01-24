@@ -24,11 +24,13 @@
                <div class="info-container">
                     <div class="info-element">
                          <span class="info-key">views:</span>
-                         <span class="info-value" id="viewers-info"> <span style="font-size:9px">Esperando info</span> </span>
+                         <span class="info-value" id="viewers-info"> <span style="font-size:9px">Esperando info</span>
+                         </span>
                     </div>
                     <div class="info-element">
                          <span class="info-key">type:</span>
-                         <span class="info-value" id="type-info"><span style="font-size:9px">Esperando info</span> </span>
+                         <span class="info-value" id="type-info"><span style="font-size:9px">Esperando info</span>
+                         </span>
                     </div>
                </div>
                <input id="check-subMode" type="checkbox" class="subMode" name="field" value="option" checked>
@@ -37,7 +39,7 @@
                <button id="initchat" onclick="initChat()">Iniciar chat de voz</button>
           </div>
      </div>
-     <div id="chat" class="chat">
+          <div id="chat" class="chat">
           <div class="badge-chat d-flex flex-row">
 
           </div>
@@ -45,6 +47,8 @@
 
      <div class="warn">
           <div class="badge-warn flex-row">
+
+
                <div class="warn-title">¡ALERTA!</div>
                <div class="warn-message">Para empezar a mostrar y escuchar mensajes pulsa "Iniciar chat de voz"</div>
                <div class="warn-btn-close">
@@ -54,6 +58,9 @@
                </div>
           </div>
      </div>
+
+
+     <div id="new-messages" class="new-messages text-center hide"> Ver mensajes nuevos</div>
 
      <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -67,10 +74,29 @@
           let subMode = true;
           let permisions = false;
           let sound = document.getElementById("alertAudio");
+          let canGoTobottom = true
+          let newMessages = $("#new-messages")
 
           function playAlert() {
                sound.play();
           }
+
+          window.onscroll = function (ev) {
+               if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+                    canGoTobottom = true
+                    console.log("you're at the bottom of the page");
+                    $("#new-messages").addClass("hide")
+               }else{
+                    canGoTobottom = false
+                    $("#new-messages").removeClass("hide")
+               }
+          };
+
+          $("#new-messages").click((e) =>{
+               $(document).scrollTop($(document).height());
+               canGoTobottom = true
+               $("#new-messages").addClass("hide")
+          })
 
 
           $("#check-subMode").change(function () {
@@ -89,7 +115,10 @@
                if (permisions) {
                     //console.log(data);
                     addNewMessageInChat(data.body.author, data.body.message, data.body.badge)
-                    $(document).scrollTop($(document).height());//Scroll bottom
+
+                    if (canGoTobottom) {
+                         $(document).scrollTop($(document).height());//Scroll bottom
+                    }
 
                     if (data.body.message.startsWith("! ")) {
                          if (subMode) {
@@ -253,7 +282,7 @@
                hideAfter: 60000,
                icon: 'success'
           });*/
-          
+
           (async () => {
                while (true) {
                     await wait(1000)

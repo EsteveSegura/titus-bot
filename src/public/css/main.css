@@ -52,7 +52,7 @@ html,body{
 }
 
 .admin{
-     margin-top: 1em;
+     padding-top: 1em;
      background-color: #121212;
 }
 
@@ -136,6 +136,23 @@ input.subMode {
      color: red;
 }
 
+.new-messages{
+     color: white;
+     padding: .5em;
+     border-radius: 10px;
+     width: 25%;
+     position: fixed;
+     background-color: #44807a;
+     bottom: 1%;         
+     left: 50%; 
+     transform: translate(-50%, -50%);
+     cursor: pointer;
+}
+
 .info-value{
 
+}
+
+.hide{
+     display:none;
 }

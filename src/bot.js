@@ -23,7 +23,7 @@ const client = new tmi.Client({
           password: process.env.TOKEN
      },
 
-     channels: ['titus_clan']
+     channels: ['trainwreckstv']
 });
 
 //Connect default
@@ -118,14 +118,14 @@ client.on("raided", (channel, username, viewers) => {
 });
 
 
-/*
+
 setInterval(async () => {
      let currentStreamStatus = await twitchApi.getStream(client.opts.channels[0].replace('#', ''))
      socket.emit('infoAboutStream', { "viewer_count": currentStreamStatus[0].viewer_count, "type": currentStreamStatus[0].type })
      console.log(currentStreamStatus[0].type)
      console.log(currentStreamStatus[0].viewer_count)
 }, 60000 * 2);
-*/
+
 
 //TEST AREA
 //https://dev.twitch.tv/docs/api/reference#get-streams
