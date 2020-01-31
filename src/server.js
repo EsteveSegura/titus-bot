@@ -10,7 +10,6 @@ const server = http.createServer(app);
 const routes = require('./routes/routes');
 const io = socketIo(server);
 
-
 app.set('views', './views')
 app.set('view engine', 'ejs');
 
@@ -71,6 +70,11 @@ io.on('connection', (socket) => {
      socket.on('infoAboutStream', (body) => {
           console.log(body);
           socket.broadcast.emit('infoAboutStream', {body});
+     });
+
+     socket.on('JoinTwitchChat', (body) => {
+          console.log(body);
+          socket.broadcast.emit('JoinTwitchChat', {body});
      });
 });
 

@@ -8,7 +8,7 @@
      <link href="<%=css%>" rel="stylesheet">
      <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.css">
-     <title>Chat</title>
+     <title>Chat <%=user %></title>
 </head>
 
 <body>
@@ -69,6 +69,7 @@
      <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
      <script>
+          let actualChannel = "<%=user %>";
           let socket = io.connect('<%=socket%>');
           let messagesQueue = []
           let subMode = true;
@@ -111,86 +112,106 @@
           })
 
           socket.on('voiceChat', async (data) => {
-               if (permisions) {
-                    //console.log(data);
-                    addNewMessageInChat(data.body.author, data.body.message, data.body.badge)
+               if(data.body.actualChat.substr(1) == actualChannel){
+                    if (permisions) {
+                         //console.log(data);
+                         addNewMessageInChat(data.body.author, data.body.message, data.body.badge)
 
-                    if (canGoTobottom) {
-                         $(document).scrollTop($(document).height());//Scroll bottom
-                    }
+                         if (canGoTobottom) {
+                              $(document).scrollTop($(document).height());//Scroll bottom
+                         }
 
-                    if (data.body.message.startsWith("! ")) {
-                         if (subMode) {
-                              if (data.body.isSuscriber) {
+                         if (data.body.message.startsWith("! ")) {
+                              if (subMode) {
+                                   if (data.body.isSuscriber) {
+                                        messagesQueue.push(data.body.message.substr(1))
+                                   }
+                              } else {
                                    messagesQueue.push(data.body.message.substr(1))
                               }
-                         } else {
-                              messagesQueue.push(data.body.message.substr(1))
                          }
                     }
                }
           });
 
           socket.on('resub', async (data) => {
-               if (permisions) {
-                    console.log(data)
-                    console.log("RESUB de" + data.body.username)
-                    addNewAlertInChat("ReSub", `${data.body.username} se ha resuscrito ${data.body.months} meses, acumulando un total de ${data.body.cumulativeMonths} meses de subscripción, y su mensaje es ${data.body.message}`)
-                    messagesQueue.push(`${data.body.username} se ha resuscrito, acumulando un total de ${data.body.cumulativeMonths} meses de subscripción, y su mensaje es ${data.body.message} --Alert--`)
+               if(data.body.actualChat.substr(1) == actualChannel){
+                    if (permisions) {
+                         console.log(data)
+                         console.log("RESUB de" + data.body.username)
+                         addNewAlertInChat("ReSub", `${data.body.username} se ha resuscrito ${data.body.months} meses, acumulando un total de ${data.body.cumulativeMonths} meses de subscripción, y su mensaje es ${data.body.message}`)
+                         messagesQueue.push(`${data.body.username} se ha resuscrito, acumulando un total de ${data.body.cumulativeMonths} meses de subscripción, y su mensaje es ${data.body.message} --Alert--`)
+                    }
                }
           });
 
           socket.on('subgift', async (data) => {
-               if (permisions) {
-                    //console.log(data)
-                    addNewAlertInChat("Regalo de sub", `${data.body.username} ha regalado una subscripción a ${data.body.recipient}`)
-                    messagesQueue.push(`${data.body.username} ha regalado una subscripción a ${data.body.recipient} --Alert--`)
+               if(data.body.actualChat.substr(1) == actualChannel){
+                    if (permisions) {
+                         //console.log(data)
+                         addNewAlertInChat("Regalo de sub", `${data.body.username} ha regalado una subscripción a ${data.body.recipient}`)
+                         messagesQueue.push(`${data.body.username} ha regalado una subscripción a ${data.body.recipient} --Alert--`)
+                    }
                }
           });
 
           socket.on('submysterygift', async (data) => {
-               if (permisions) {
-                    //console.log(data)
+               if(data.body.actualChat.substr(1) == actualChannel){
+                    if (permisions) {
+                         //console.log(data)
+                    }
                }
           });
 
           socket.on('subscription', async (data) => {
-               if (permisions) {
-                    //console.log(data)
-                    addNewAlertInChat("Subscripción", `${data.body.username} se ha suscrito, con el mensaje:${data.body.message}`)
-                    messagesQueue.push(`${data.body.username} se ha suscrito, con el mensaje:${data.body.message} --Alert--`)
+               if(data.body.actualChat.substr(1) == actualChannel){
+                    if (permisions) {
+                         //console.log(data)
+                         addNewAlertInChat("Subscripción", `${data.body.username} se ha suscrito, con el mensaje:${data.body.message}`)
+                         messagesQueue.push(`${data.body.username} se ha suscrito, con el mensaje:${data.body.message} --Alert--`)
+                    }
                }
           });
 
           socket.on('infoAboutStream', async (data) => {
-               $("#viewers-info").html(data.body.viewer_count)
-               $("#type-info").html(data.body.type)
-               console.log(data)
+               console.log(`canal ${data.body.actualChat.substr(1)}`)
+               console.log(`este canal ${actualChannel}`)
+               if(data.body.actualChat == actualChannel){
+                    $("#viewers-info").html(data.body.viewer_count)
+                    $("#type-info").html(data.body.type)
+                    console.log(data)
+               }
           })
 
           socket.on('cheer', async (data) => {
-               if (permisions) {
-                    //console.log(data)
-                    addNewAlertInChat("Cheer", `${data.body.username} ha dejado ${data.body.howManyBits} bits, con el mensaje:${data.body.message}`)
-                    messagesQueue.push(`${data.body.username} ha dejado ${data.body.howManyBits} bits, con el mensaje:${data.body.message} --Alert--`)
+               if(data.body.actualChat.substr(1) == actualChannel){
+                    if (permisions) {
+                         //console.log(data)
+                         addNewAlertInChat("Cheer", `${data.body.username} ha dejado ${data.body.howManyBits} bits, con el mensaje:${data.body.message}`)
+                         messagesQueue.push(`${data.body.username} ha dejado ${data.body.howManyBits} bits, con el mensaje:${data.body.message} --Alert--`)
+                    }
                }
           });
 
           socket.on('hosted', async (data) => {
-               if (permisions) {
-                    //console.log(data)
-                    addNewAlertInChat("Host", `${data.body.username} ha hosteado con ${data.body.viewers} personas`)
-                    messagesQueue.push(`${data.body.username} ha hosteado con ${data.body.viewers} personas --Alert--`)
+               if(data.body.actualChat.substr(1) == actualChannel){
+                    if (permisions) {
+                         //console.log(data)
+                         addNewAlertInChat("Host", `${data.body.username} ha hosteado con ${data.body.viewers} personas`)
+                         messagesQueue.push(`${data.body.username} ha hosteado con ${data.body.viewers} personas --Alert--`)
 
+                    }
                }
           });
 
           socket.on('raided', async (data) => {
-               if (permisions) {
-                    //console.log(data)
-                    addNewAlertInChat("Raid", `${data.body.username} ha raideado con ${data.body.viewers} personas`)
-                    messagesQueue.push(`${data.body.username} ha raideado con ${data.body.viewers} personas --Alert--`)
+               if(data.body.actualChat.substr(1) == actualChannel){
+                    if (permisions) {
+                         //console.log(data)
+                         addNewAlertInChat("Raid", `${data.body.username} ha raideado con ${data.body.viewers} personas`)
+                         messagesQueue.push(`${data.body.username} ha raideado con ${data.body.viewers} personas --Alert--`)
 
+                    }
                }
           });
 
