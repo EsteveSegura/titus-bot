@@ -112,11 +112,13 @@ client.on("raided", (channel, username, viewers) => {
      console.log('raided')
 });
 
+/*
 setInterval(async() => {
      for(let i = 0 ; i < client.opts.channels.length; i++){
           try {
                let currentStreamStatus = await twitchApi.getStream(client.opts.channels[i].substr(1))
                if(currentStreamStatus){
+                    //FAIL THIS LINE
                     socket.emit('infoAboutStream', { "actualChat" : client.opts.channels[i].substr(1) ,"viewer_count": currentStreamStatus[0].viewer_count, "type": currentStreamStatus[0].type })
                     console.log(currentStreamStatus)
                }
@@ -125,3 +127,4 @@ setInterval(async() => {
           }
      }
 },   60000 * 5);
+*/
