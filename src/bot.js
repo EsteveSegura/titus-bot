@@ -13,7 +13,7 @@ const client = new tmi.Client({
           secure: true
      },
      identity: {
-          username: 'bot_titus',
+          username: 'fasterchatter',
           password: process.env.TOKEN
      },
 
@@ -36,6 +36,7 @@ socket.on('JoinTwitchChat' , (data) =>{
 
 //When time out, reconnect
 client.on("timeout", (channel, username, reason, duration, userstate) => {
+     console.log(`TIMEOUT : ${reason}`) //null
      console.log("time out.... init restart")
      exec("pm2 restart 18", (err, stdout, stderr) => {
           console.log('Reset done.')
