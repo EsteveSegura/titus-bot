@@ -17,7 +17,7 @@ const client = new tmi.Client({
           password: process.env.TOKEN
      },
 
-     channels: []
+     channels: ['titus_clan']
 });
 
 //Connect default
