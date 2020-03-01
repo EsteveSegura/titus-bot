@@ -37,6 +37,7 @@
                <label for="check-subMode" class="text-subMode">¡Modo sub!</label>
                <br>
                <button id="initchat" onclick="initChat()">Iniciar chat de voz</button>
+               <button id="reset" onclick="reset()">RESET</button>
           </div>
      </div>
           <div id="chat" class="chat">
@@ -97,7 +98,6 @@
                canGoTobottom = true
                $("#new-messages").addClass("hide")
           })
-
 
           $("#check-subMode").change(function () {
                if (this.checked) {
@@ -264,6 +264,10 @@
                          responsiveVoice.speak(message, "Spanish Female", { onend: resolve })
                     }
                })
+          }
+
+          function reset(){
+               socket.emit('restart', ({"message" : "restart"}));
           }
 
           async function flashOnScreen(iterations) {

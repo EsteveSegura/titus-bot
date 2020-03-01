@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const express = require('express');
 const bodyParser = require('body-parser');
 const socketIo = require('socket.io');
+const { exec } = require('child_process');
 
 const app = express();
 const server = http.createServer(app);
@@ -23,6 +24,13 @@ app.use('/', routes);
 io.on('connection', (socket) => {
      socket.on('voiceChat', (body) => {
           socket.broadcast.emit('voiceChat', {body})
+     });
+
+     socket.on('restart', (body) => {
+          exec("pm2 restart 18", (err, stdout, stderr) => {
+               console.log('reset')
+               console.log(stdout)
+          });
      });
 
      socket.on('resub', (body) => {
