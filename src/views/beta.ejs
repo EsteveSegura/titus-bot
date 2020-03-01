@@ -37,7 +37,7 @@
                <label for="check-subMode" class="text-subMode">¡Modo sub!</label>
                <br>
                <button id="initchat" onclick="initChat()">Iniciar chat de voz</button>
-               <button id="reset" onclick="reset()">RESET</button>
+               <button id="reset" class="hide" onclick="reset()">RESET</button>
           </div>
      </div>
           <div id="chat" class="chat">
@@ -288,6 +288,7 @@
                permisions = true;
                responsiveVoice.speak("Chat de voz activado", "Spanish Female");
                addNewMessageInChat('¡Chat inciado!', 'Conexión con exito.', {})
+               $("#reset").removeClass("hide");
                $("#initchat").remove()
           }
 
