@@ -28,7 +28,7 @@
     "ejs": "^2.7.2",
     "express": "^4.17.1",
     "morgan": "^1.9.1",
-    "socket.io": "^2.3.0",
+    "socket.io": "^2.4.0",
     "socket.io-client": "^2.3.0",
     "tmi.js": "^1.5.0"
   }
